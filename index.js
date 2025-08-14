@@ -1,12 +1,8 @@
-
-const fs = require('fs');
-const path = require('path');
-
 const { Client, GatewayIntentBits, Events, EmbedBuilder } = require('discord.js');
 const { token, mangadex_id, lang_en, most_recent_chapter } = require('./config.json');
-const { get } = require('http');
 
 const client = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]});
+
 client.login(token);
 
 client.on('messageCreate', async (message) => {
@@ -22,7 +18,7 @@ client.on('messageCreate', async (message) => {
     { name: 'Read it now!', value: data.attributes.externalUrl }
    )
    .setTimestamp()
-   .setFooter({ text: 'Box Bot', iconURL: 'https://i.imgur.com/AfFp7pu.png'})
+   .setFooter({ text: 'Mugiwara No Luffy', iconURL: client.user.displayAvatarURL()})
 
    message.channel.send({ embeds: [embed]});
   }catch(error) {
