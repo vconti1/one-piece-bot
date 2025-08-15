@@ -16,7 +16,6 @@ const saveState = () => fs.writeFileSync(STATE_PATH, JSON.stringify(state, null,
 
 async function getLatestChapter() {
   const url = new URL(`https://api.mangadex.org/manga/${mangadex_id}/feed?${lang_en}&limit=1&${most_recent_chapter}`)
-
   const res =  await fetch(url);
   const json = await res.json();
   
@@ -28,18 +27,16 @@ async function accounce(channel) {
   if (!latest) return;
 
   const embed = new EmbedBuilder()
-      .setColor(0x0099FF)
-      .setTitle(`NEW CHAPTER RELEASE`)
-      .setDescription(`Chapter **${data.attributes.chapter}** | *${data.attributes.title}*`)
-      .addFields(
-        { name: 'Read it now!', value: data.attributes.externalUrl ?? 'jk' } // lol
-      )
-      .setTimestamp()
-      .setFooter({ text: 'Mugiwara No Luffy', iconURL: client.user.displayAvatarURL()})
+  .setColor(0x0099FF)
+  .setTitle(`NEW CHAPTER RELEASE`)
+  .setDescription(`Chapter **${data.attributes.chapter}** | *${data.attributes.title}*`)
+  .addFields(
+    { name: 'Read it now!', value: data.attributes.externalUrl ?? 'jk' } // lol
+  )
+  .setTimestamp()
+  .setFooter({ text: 'Mugiwara No Luffy', iconURL: client.user.displayAvatarURL()})
 
-      await channel.send({ embeds: [embed]});
-
-
+  await channel.send({ embeds: [embed]});
 }
 
 async function checkAndAnnounce(channel) {
