@@ -6,11 +6,21 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const STATE_PATH = path.join(__dirname, 'state.json');
 let state = {};
 
-try { 
-  state = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8'));
- } catch { 
-  state = {}; 
+function loadStateSafe() {
+  try { return JSON.parse(fs.readFileSync(STATE_PATH, 'utf8')); }
+  catch { return {}; }
 }
+
+state = loadStateSafe();
+
+let watchTimer = null;
+fs.watch(STATE_PATH, () => {
+  clearTimeout(watchTimer);
+  watchTimer = setTimeout(() => {
+    state = loadStateSafe();
+    console.log('state.json changed on disk; reloaded.');
+  }, 100); // debounce
+});
 
 const saveState = () => fs.writeFileSync(STATE_PATH, JSON.stringify(state, null, 2));
 
@@ -22,16 +32,16 @@ async function getLatestChapter() {
   return json.data[0]; 
 }
 
-async function accounce(channel) {
-  const latest = getLatestChapter();
-  if (!latest) return;
+async function announce(channel) {
+  const latest = await getLatestChapter();
+  if (!latest || !latest.attributes || !latest.attributes.chapter ) return;
 
   const embed = new EmbedBuilder()
   .setColor(0x0099FF)
   .setTitle(`NEW CHAPTER RELEASE`)
-  .setDescription(`Chapter **${data.attributes.chapter}** | *${data.attributes.title}*`)
+  .setDescription(`Chapter **${latest.attributes.chapter}** | *${latest.attributes.title}*`)
   .addFields(
-    { name: 'Read it now!', value: data.attributes.externalUrl ?? 'jk' } // lol
+    { name: 'Read it now!', value: latest.attributes.externalUrl ?? 'jk' } // lol
   )
   .setTimestamp()
   .setFooter({ text: 'Mugiwara No Luffy', iconURL: client.user.displayAvatarURL()})
@@ -48,13 +58,15 @@ async function checkAndAnnounce(channel) {
   if (!lastSeen && !send_on_startup) {
     state[mangadex_id] = latest.id;
     saveState();
+    console.log("Save state on startup called!");
     return;
   }
 
   if (latest.id !== lastSeen) {
-    await accounce(channel);
+    await announce(channel);
     state[mangadex_id] = latest.id;
     saveState();
+    console.log("Save state called!");
   }
 }
 
