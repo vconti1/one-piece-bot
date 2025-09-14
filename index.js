@@ -32,8 +32,7 @@ async function getLatestChapter() {
   return json.data[0]; 
 }
 
-async function announce(channel) {
-  const latest = await getLatestChapter();
+async function announce(channel, latest) {
   if (!latest || !latest.attributes || !latest.attributes.chapter ) return;
 
   const embed = new EmbedBuilder()
@@ -63,7 +62,7 @@ async function checkAndAnnounce(channel) {
   }
 
   if (latest.id !== lastSeen) {
-    await announce(channel);
+    await announce(channel, latest);
     state[mangadex_id] = latest.id;
     saveState();
     console.log("Save state called!");
@@ -80,7 +79,7 @@ client.once(Events.ClientReady, async () => {
     process.exit(1);
   }
   // Initial check
-  await checkAndAnnounce(channel);
+ // await checkAndAnnounce(channel);
 
   const interval = Math.max(1, Number(poll_minutes)) * 60_000
   setInterval(() => checkAndAnnounce(channel).catch(console.error), interval);
