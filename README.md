@@ -1,4 +1,4 @@
-# 🏴‍☠️ One Piece Chapter Release Bot
+# 🏴 One Piece Chapter Release Bot
 
 A Discord bot that automatically posts when a **new English chapter** is released on **MangaDex** for a specified series.  
 Built with **Node.js 20+** and **discord.js v14**.
@@ -10,29 +10,22 @@ For more information, visit [the MangaDex API docs.](https://api.mangadex.org/do
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🔍 Polls MangaDex’s feed for a single manga ID
-- 🌐 Language filter (default: English)
-- ⏳ Deterministic **latest** chapter via `order[readableAt]=desc&limit=1`
-- 📢 Posts an **embed** to a target channel with title, chapter number, and link
-- 💾 **Persistent state** (`state.json`) so it won’t repost the same chapter after restarts
-- ⚙️ Configurable poll interval & “first-boot announce” behavior
+-  Polls MangaDex’s feed for a single manga ID
+-  Language filter (default: English)
+-  Deterministic **latest** chapter via `order[readableAt]=desc&limit=1`
+-  Posts an **embed** to a target channel with title, chapter number, and link
+-  **Persistent state** (`state.json`) so it won’t repost the same chapter after restarts
+-  Configurable poll interval & “first-boot announce” behavior
 
 ---
 
-## 🧰 Requirements
+##  Requirements
 
 - **Node.js 18+** (tested on 20+)
 - A **Discord bot token**
 - The MangaDex **manga ID** for the series you want to track
 - Bot permissions: `Send Messages` in the target channel
 
----
 
-## 📦 Installation
-
-```bash
-git clone https://github.com/<your-username>/one-piece-bot.git
-cd one-piece-bot
-npm ci
