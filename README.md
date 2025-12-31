@@ -1,4 +1,4 @@
-# 🏴 One Piece Chapter Release Bot
+#  One Piece Chapter Release Bot
 
 A Discord bot that automatically posts when a **new English chapter** is released on **MangaDex** for a specified series.  
 Built with **Node.js 20+** and **discord.js v14**.
@@ -27,5 +27,6 @@ For more information, visit [the MangaDex API docs.](https://api.mangadex.org/do
 - A **Discord bot token**
 - The MangaDex **manga ID** for the series you want to track
 - Bot permissions: `Send Messages` in the target channel
+
 
 
